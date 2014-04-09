@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1275348492">
+    <data-source source="LOCAL" name="Django default" uuid="12b8e113-69f7-475a-b8af-5b460264b771">
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:rubliki</jdbc-url>
+      <user-name>postgres</user-name>
+      <user-password>dfe6dfe1df9bdfeedff9dfe8df98dfdb</user-password>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
