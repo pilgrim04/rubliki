@@ -1,0 +1,4 @@
+Django==1.6.2
+psycopg2
+coffin
+jinja2

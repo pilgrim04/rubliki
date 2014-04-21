@@ -1,9 +1,17 @@
-from coffin.views.generic.base import TemplateView
+# -*- coding: utf-8 -*-
+from django.template.response import TemplateResponse
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.views.generic import FormView
+from django.http import HttpResponseRedirect, HttpResponse
+from .forms import *
 
 
-class MainView(TemplateView):
-    template_name = 'test.html'
+class LoginView(FormView):
+    form_class = LoginForm
+    template_name = 'login.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(MainView, self).get_context_data(**kwargs)
-        return context
+    def form_valid(self, form):
+        if self.request.user.is_authenticated():
+            raise Exception('Already login')
+        auth_login(self.request, form.get_user())
+        return HttpResponseRedirect('/')
