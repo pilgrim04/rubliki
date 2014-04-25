@@ -4,12 +4,38 @@
     <title>мои счета</title>
 </head>
 <body>
-Список счетов:
-1.
-2.
-3.
-
 <a href="/my_billings/add_new_billing">Добавить новый счет</a>
+
+<h4>Список счетов</h4>
+
+<table>
+
+<th>название</th>
+<th>тип счета</th>
+<th>валюта</th>
+
+{% for i in user_billings %}
+    <tr>
+        <td>{{ i.billing_name }}</td>
+        <td>
+            {% if i.billing_type.billing_type %}
+                Наличные
+            {% else %}
+                Безналичные
+            {% endif %}
+        </td>
+        <td>
+            {% if i.currency.currency == 1 %}
+                Рубли
+            {% elif i.currency.currency == 2 %}
+                $
+            {% else %}
+                евры
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
 
 </body>
 </html>

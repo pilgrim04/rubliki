@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager
 from django.utils import timezone
+from .consts import *
 
 
 class User(AbstractBaseUser):
@@ -21,12 +22,12 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['password', 'email']
 
 
-class Currency(models.Model):  # валюта. 1 - rur, 2 - usd, 3 - eur
-    currency = models.CharField(max_length=3)
+class Currency(models.Model):
+    currency = models.SmallIntegerField(choices=CURRENCY_CHOICES)
 
 
-class BillingTypes(models.Model):  # типы счетов. 1 - cash, 2 - cashless
-    billing_type = models.CharField(max_length=20)
+class BillingTypes(models.Model):
+    billing_type = models.BooleanField(choices=BILLING_TYPE_CHOICES)
 
 
 class Billing(models.Model):
@@ -34,20 +35,21 @@ class Billing(models.Model):
     billing_name = models.CharField(max_length=256)
     billing_type = models.ForeignKey(BillingTypes)
     currency = models.ForeignKey(Currency)
+    money = models.FloatField(default=0)
 
 
-class Category(models.Model):  # категории приходов-расходов
+class Category(models.Model):
     category_name = models.CharField(max_length=256)
-    user = models.ForeignKey(User)  # привязка к юзеру, который создал категорию
+    user = models.ForeignKey(User)
 
 
 class Subcategory(models.Model):
-    category = models.ForeignKey(Category)  # привязка к категории
+    category = models.ForeignKey(Category)
     subcategory_name = models.CharField(max_length=256)
 
 
-class TransactionType(models.Model):  # типы транзакций: 1 - income, 2 - outcome
-    transaction_type = models.CharField(max_length=20)
+class TransactionType(models.Model):
+    transaction_type = models.BooleanField(choices=TRANSACTION_TYPE_CHOICES)
 
 
 class Transaction(models.Model):
@@ -56,5 +58,6 @@ class Transaction(models.Model):
     transaction_type = models.ForeignKey(TransactionType)
     category = models.ForeignKey(Category)
     subcategory = models.ForeignKey(Subcategory)
+    money = models.FloatField(default=0)
     datetime = models.DateTimeField()
     comment = models.TextField()

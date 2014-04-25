@@ -4,6 +4,7 @@ from django.views.generic import FormView, RedirectView
 from coffin.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
 from .forms import *
+from .models import *
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -80,6 +81,8 @@ class BillingView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BillingView, self).get_context_data(**kwargs)
+        user_billings = Billing.objects.filter(user_id=self.request.user.id)
+        context['user_billings'] = user_billings
         return context
 
 

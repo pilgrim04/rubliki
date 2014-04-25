@@ -5,15 +5,12 @@
 </head>
 <body>
 
-        Привет, {{ current_user }}!
-
-        <form method="post">{% csrf_token %}
-            <a href="/my_billings" name="my_billings">Мои счета</a>
-            <a href="/my_categories" name="my_categories">Мои категории</a>
-            <a href="/edit" name="edit_profile">Редактировать аккаунт</a>
-            <a href="/logout" name="logout">Выход</a>
-        </form>
-
+    Привет, {{ current_user }}!<br/>
+    <a href="/edit" name="edit_profile">Редактировать аккаунт</a>
+    <a href="/logout" name="logout">Выход</a>
+    <br/><br/><br/>
+    <a href="/my_billings" name="my_billings">Мои счета</a>
+    <a href="/my_categories" name="my_categories">Мои категории</a>
 
 </body>
 </html>

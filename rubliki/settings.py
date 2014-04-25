@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'rubliki_1',
+    'south'
 )
 
 AUTH_USER_MODEL = 'rubliki_1.User'
