@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title></title>
-</head>
-<body>
-try to log in
+    <head>
+        <title>Welcome to Rubliki.ru!</title>
+    </head>
 
-<form>
-    <div class="pclc-auth-i-txt"><input id="id_username" name="username" type="text" id="login_comm" onFocus="checkFocus(this, 'логин')" onBlur="checkBlur(this, 'логин')" /></div>
-    <div class="pclc-auth-i-txt"><input id="id_password" name="password" type="password" id="pass_comm" onFocus="checkFocus(this, 'пароль')" onBlur="checkBlur(this, 'пароль')"/></div>
-    <div class="pclc-auth-i-sub"><input type="submit" value="войти"/>
-</form>
-</body>
+    <body>
+
+        Welcome to Rubliki.ru!
+
+        <form method="post">{% csrf_token %}
+            <div><input id="id_username" name="login" type="text" onFocus="checkFocus(this, 'логин')" onBlur="checkBlur(this, 'логин')" /></div>
+            <div><input id="id_password" name="password" type="password" onFocus="checkFocus(this, 'пароль')" onBlur="checkBlur(this, 'пароль')"/></div>
+            <div><input type="submit" value="войти"/>
+        </form>
+
+    </body>
 </html>
