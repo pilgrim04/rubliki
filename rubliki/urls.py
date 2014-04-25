@@ -13,7 +13,12 @@ urlpatterns = patterns('rubliki_1.views',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^login/', LoginView.as_view(), name='login'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
-    url(r'^cabinet/', CabinetView.as_view(), name='cabinet')
+    url(r'^registration/', RegistrationView.as_view(), name='registration'),
+
+    url(r'^cabinet/', CabinetView.as_view(), name='cabinet'),
+    url(r'^my_billings/', BillingView.as_view(), name='billing'),
+    url(r'^my_categories/', CategoryView.as_view(), name='category'),
+    url(r'^edit/', EditProfileView.as_view(), name='edit'),
 
     # url(r'^register_ok/', RegistrationCompleteView.as_view(), name='register_ok'),
     # Uncomment the next line to enable the admin:

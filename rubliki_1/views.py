@@ -4,6 +4,8 @@ from django.views.generic import FormView, RedirectView
 from coffin.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
 from .forms import *
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class LoginView(FormView):
@@ -29,9 +31,36 @@ class LogoutView(TemplateView):
     template_name = 'logout.html'
 
     def get(self, *args, **kwargs):
-        print 'def logout'
         auth_logout(self.request)
         return super(LogoutView, self).get(*args, **kwargs)
+
+
+class EditProfileView(TemplateView):
+    template_name = 'edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(EditProfileView, self).get_context_data(**kwargs)
+        return context
+
+
+class RegistrationView(FormView):
+    form_class = RegistrationForm
+    template_name = 'registration.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(RegistrationView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        user = User.objects.create_user(data['login'],
+                                        data['email'],
+                                        data['password'],
+                                        first_name=data['first_name'],
+                                        last_name=data['last_name'])
+        user.save()
+        #TODO: настроить автоматическое попадание в личный кабинет после регистрации
+        return HttpResponseRedirect('/login')
 
 
 class CabinetView(TemplateView):
@@ -40,7 +69,24 @@ class CabinetView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(CabinetView, self).get_context_data(**kwargs)
         if self.request.user.first_name:
-            context['user'] = self.request.user.first_name
+            context['current_user'] = self.request.user.first_name
         else:
-            context['user'] = self.request.user
+            context['current_user'] = self.request.user
         return context
+
+
+class BillingView(TemplateView):
+    template_name = 'billings.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BillingView, self).get_context_data(**kwargs)
+        return context
+
+
+class CategoryView(TemplateView):
+    template_name = 'categories.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        return context
+

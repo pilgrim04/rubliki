@@ -2,6 +2,7 @@ __author__ = 'pilgrim'
 from django import forms
 from django.contrib.auth import authenticate
 from django.utils.translation import ugettext as _
+from .models import User
 
 
 class LoginForm(forms.Form):
@@ -24,3 +25,35 @@ class LoginForm(forms.Form):
 
     def get_user(self):
         return self.user_cache
+
+
+class RegistrationForm(forms.Form):
+    login = forms.CharField(max_length=30)
+    email = forms.CharField(max_length=30)
+    password = forms.CharField(max_length=30, widget=forms.PasswordInput())
+    password_confirm = forms.CharField(max_length=30, widget=forms.PasswordInput())
+
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+
+    def clean_password_confirm(self):
+        print 'clean1'
+        password_confirm = self.cleaned_data['password_confirm']
+        if password_confirm != self.cleaned_data.get('password'):
+            raise forms.ValidationError(_('Passwords must be equal'))
+        return password_confirm
+
+    def clean(self):
+        print 'clean2'
+        data = self.cleaned_data
+        existing = User.objects.filter(username__iexact=data['login'])
+        if existing.exists():
+            self.errors['login'] = [_('This login is already registered')]
+            del data['login']
+
+        existing = User.objects.filter(email__iexact=data['email'])
+        if existing.exists():
+            self.errors['email'] = [_('This email is already registered')]
+            del data['email']
+        print 'data:', data
+        return data
