@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Личный кабинет</title>
+</head>
+<body>
+
+        Привет, {{ user }}!
+
+        <form method="post">{% csrf_token %}
+            <input type="submit" value="Мои счета"><br/>
+            <input type="submit" value="Мои категории"><br/>
+            <input type="submit" value="Редактировать аккаунт"><br/>
+            <a href="/logout" name="logout">Выход</a>
+        </form>
+
+
+</body>
+</html>
