@@ -2,7 +2,8 @@ __author__ = 'pilgrim'
 from django import forms
 from django.contrib.auth import authenticate
 from django.utils.translation import ugettext as _
-from .models import User
+from .models import User, Billing
+from .consts import *
 
 
 class LoginForm(forms.Form):
@@ -37,14 +38,12 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField()
 
     def clean_password_confirm(self):
-        print 'clean1'
         password_confirm = self.cleaned_data['password_confirm']
         if password_confirm != self.cleaned_data.get('password'):
             raise forms.ValidationError(_('Passwords must be equal'))
         return password_confirm
 
     def clean(self):
-        print 'clean2'
         data = self.cleaned_data
         existing = User.objects.filter(username__iexact=data['login'])
         if existing.exists():
@@ -55,5 +54,11 @@ class RegistrationForm(forms.Form):
         if existing.exists():
             self.errors['email'] = [_('This email is already registered')]
             del data['email']
-        print 'data:', data
         return data
+
+
+class AddBillingForm(forms.Form):
+    billing_name = forms.CharField(label=(_("billing_name")))
+    billing_type = forms.BooleanField(label=(_("billing_type")))
+    currency = forms.IntegerField(label=(_("currency")))
+    money = forms.FloatField(label=(_("money")))

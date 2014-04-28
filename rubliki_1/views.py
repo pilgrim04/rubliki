@@ -2,7 +2,8 @@
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.views.generic import FormView, RedirectView
 from coffin.views.generic.base import TemplateView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template.response import TemplateResponse
 from .forms import *
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -66,6 +67,7 @@ class RegistrationView(FormView):
 
 class CabinetView(TemplateView):
     template_name = 'cabinet.html'
+    #TODO: настроить декоратор
 
     def get_context_data(self, **kwargs):
         context = super(CabinetView, self).get_context_data(**kwargs)
@@ -83,6 +85,36 @@ class BillingView(TemplateView):
         context = super(BillingView, self).get_context_data(**kwargs)
         user_billings = Billing.objects.filter(user_id=self.request.user.id)
         context['user_billings'] = user_billings
+        return context
+
+
+class AddBillingView(TemplateView, FormView):
+    template_name = 'add-new-billing.html'
+    form_class = AddBillingForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AddBillingView, self).get_context_data(**kwargs)
+        context['billing_type'] = BillingTypes.objects.all()
+        context['currency'] = Currency.objects.all()
+        return context
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        repeated_names = Billing.objects.filter(user=self.request.user,
+                                             billing_name=data['billing_name'])
+        if not repeated_names:
+            new_billing = Billing.objects.create(user=self.request.user,
+                                                 billing_name=data['billing_name'],
+                                                 billing_type=BillingTypes.objects.get(billing_type=data['billing_type']),
+                                                 currency=Currency.objects.get(currency=data['currency']),
+                                                 money=data['money']
+                                                 )
+            new_billing.save()
+        return HttpResponseRedirect('/my_billings')
+    #TODO: FIX: не учитывается тип счета. всегда добавляется cash
+
+    def form_invalid(self, form):
+        context = super(AddBillingView, self).form_invalid(form)
         return context
 
 
