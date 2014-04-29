@@ -101,17 +101,14 @@ class AddBillingView(TemplateView, FormView):
     def form_valid(self, form):
         data = form.cleaned_data
         repeated_names = Billing.objects.filter(user=self.request.user,
-                                             billing_name=data['billing_name'])
+                                                billing_name=data['billing_name'])
         if not repeated_names:
-            new_billing = Billing.objects.create(user=self.request.user,
-                                                 billing_name=data['billing_name'],
-                                                 billing_type=BillingTypes.objects.get(billing_type=data['billing_type']),
-                                                 currency=Currency.objects.get(currency=data['currency']),
-                                                 money=data['money']
-                                                 )
-            new_billing.save()
+            _ = Billing.objects.create(user=self.request.user,
+                                       billing_name=data['billing_name'],
+                                       billing_type=BillingTypes.objects.get(billing_type=data['billing_type']),
+                                       currency=Currency.objects.get(currency=data['currency']),
+                                       money=data['money'])
         return HttpResponseRedirect('/my_billings')
-    #TODO: FIX: не учитывается тип счета. всегда добавляется cash
 
     def form_invalid(self, form):
         context = super(AddBillingView, self).form_invalid(form)

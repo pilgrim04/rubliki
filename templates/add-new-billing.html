@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавление нового счета</title>
+</head>
+<body>
+<h5>Добавляем новый счет</h5>
+
+<form method="post">{% csrf_token %}
+    Название:<br/> <input name="billing_name" type="text"> <br/><br/>
+
+    Тип счета:<br/>
+    {% for i in billing_type %}
+         {{ i.get_billing_type_display() }}
+        <input name="billing_type" type="radio" value="{{ i.id }}">{{ i.id }}<br/>
+    {% endfor %}<br/>
+
+    Валюта:<br/>
+    {% for j in currency %}
+        {{ j.get_currency_display() }}
+        <input name="currency" type="radio" value="{{ j.id }}">{{ j.id }}<br/>
+    {% endfor %}<br/>
+
+    Сколько денег сейчас на счете: <br/>
+    <input name="money" type="number"><br/><br/>
+
+    <input type="submit" value="create">
+
+
+</form>
+
+
+</body>
+</html>

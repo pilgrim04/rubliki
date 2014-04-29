@@ -2,8 +2,8 @@ __author__ = 'pilgrim'
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
 
-INCOME_TRANSACTION = True
-OUTCOME_TRANSACTION = False
+INCOME_TRANSACTION = 1
+OUTCOME_TRANSACTION = 2
 
 TRANSACTION_TYPE_CHOICES = (
     (INCOME_TRANSACTION, _('income')),
@@ -11,8 +11,8 @@ TRANSACTION_TYPE_CHOICES = (
 )
 
 
-CASH = True
-CASHLESS = False
+CASH = 1
+CASHLESS = 2
 
 BILLING_TYPE_CHOICES = (
     (CASH, _('cash')),

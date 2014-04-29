@@ -59,6 +59,6 @@ class RegistrationForm(forms.Form):
 
 class AddBillingForm(forms.Form):
     billing_name = forms.CharField(label=(_("billing_name")))
-    billing_type = forms.BooleanField(label=(_("billing_type")))
+    billing_type = forms.IntegerField(label=(_("billing_type")))
     currency = forms.IntegerField(label=(_("currency")))
     money = forms.FloatField(label=(_("money")))

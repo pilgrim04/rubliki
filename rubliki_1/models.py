@@ -27,7 +27,7 @@ class Currency(models.Model):
 
 
 class BillingTypes(models.Model):
-    billing_type = models.BooleanField(choices=BILLING_TYPE_CHOICES)
+    billing_type = models.SmallIntegerField(choices=BILLING_TYPE_CHOICES)
 
 
 class Billing(models.Model):
@@ -49,7 +49,7 @@ class Subcategory(models.Model):
 
 
 class TransactionType(models.Model):
-    transaction_type = models.BooleanField(choices=TRANSACTION_TYPE_CHOICES)
+    transaction_type = models.SmallIntegerField(choices=TRANSACTION_TYPE_CHOICES)
 
 
 class Transaction(models.Model):
