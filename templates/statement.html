@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Проведенные транзакции
+    </title>
+</head>
+
+<body>
+    <br/>
+    <a href="/cabinet/">В кабинет</a><br/>
+    <a href="/my_billings/">К счетам</a><br/>
+
+    <table width="60%" align="left">
+        <th>счет</th>
+        <th>категория</th>
+        <th>подкатегория</th>
+        <th>деньги</th>
+        <th>дата</th>
+        <th>коммент</th>
+
+        {% for i in transactions %}
+            <tr align="center">
+                <td>{{ i.billing.billing_name }} ({{ i.billing.billing_type.get_billing_type_display() }}) </td>
+
+                <td>{{ i.category.category_name }}</td>
+                <td>{{ i.subcategory.subcategory_name }}</td>
+                <td>
+                    {% if i.transaction_type.get_transaction_type_display() == 'income' %}
+                        +
+                    {% elif i.transaction_type.get_transaction_type_display() == 'outcome' %}
+                        -
+                    {% endif %}
+                    {{ i.money }}
+                    {{ i.billing.currency.get_currency_display() }}
+                </td>
+                <td>{{ i.datetime|date }}</td>
+                <td>{{ i.comment }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+
+
+</body>
+</html>

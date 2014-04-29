@@ -5,12 +5,30 @@
 </head>
 <body>
 
-    Привет, {{ current_user }}!<br/>
+    Вы залогинились под ником {{ current_user }}<br/><br/><br/>
+    Моё состояние: {{ common_balance }}
+    <br/><br/>
+    Всего открыто счетов: {{ qty_of_balances }}<br/><br/>
+
+    {% for i in balances %}
+        Счет:  {{ i.billing_name }} <br/>
+        Баланс: {{ i.money }} {{ i.currency.get_currency_display() }}<br/>
+        Тип счета: {{ i.billing_type.get_billing_type_display() }} <br/><br/>
+
+    {% endfor %}
+
+    <br/>
+
+
+    <br/><br/><br/>
+    <a href="/my_billings" name="my_billings">Мои счета</a><br/><br/>
+    <a href="/my_categories" name="my_categories">Мои категории</a><br/><br/>
+    <a href="/statement" name="my_categories">Мои транзакции</a><br/><br/>
+    <a href="/transaction" name="my_categories">Провести новую транзакцию</a><br/><br/>
+
+
+    <br/><br/><br/><br/><br/><br/>
     <a href="/edit" name="edit_profile">Редактировать аккаунт</a>
     <a href="/logout" name="logout">Выход</a>
-    <br/><br/><br/>
-    <a href="/my_billings" name="my_billings">Мои счета</a>
-    <a href="/my_categories" name="my_categories">Мои категории</a>
-
 </body>
 </html>

@@ -4,6 +4,12 @@
     <title></title>
 </head>
 <body>
+
+<a href="/cabinet/">В кабинет</a><br/>
+<a href="/statement/">Все транзакции</a><br/>
+<a href="/transaction/transfer/">Сделать перевод со счета на счет</a><br/>
+<br/>
+
 Проводим транзакцию:<br/><br/>
 
 <form method="post">{% csrf_token %}
@@ -15,7 +21,7 @@
 
 по какому счету идет транзакция:<br/>
 {% for bill in my_billings %}
-    <input type="radio" name="billing_id" value={{ bill.currency.id }}>{{ bill.billing_name }}
+    <input type="radio" name="billing_id" value={{ bill.id }}>{{ bill.billing_name }}
     (в валюте '{{ bill.currency.get_currency_display() }}')
     (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
 

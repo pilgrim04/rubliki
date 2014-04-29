@@ -4,10 +4,12 @@ from django.utils.translation import ugettext_lazy as _
 
 INCOME_TRANSACTION = 1
 OUTCOME_TRANSACTION = 2
+TRANSFER_TRANSACTION = 3
 
 TRANSACTION_TYPE_CHOICES = (
     (INCOME_TRANSACTION, _('income')),
     (OUTCOME_TRANSACTION, _('outcome')),
+    (TRANSFER_TRANSACTION, _('transfer'))
 )
 
 

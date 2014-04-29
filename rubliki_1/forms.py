@@ -82,3 +82,9 @@ class TransactionForm(forms.Form):
     money = forms.FloatField(label=(_("money")))
     comment = forms.CharField(label=(_("comment")))
 
+
+class TransferForm(forms.Form):
+    billing_id_from = forms.IntegerField(label=(_("billing_id_from")))
+    billing_id_to = forms.IntegerField(label=(_("billing_id_to")))
+    money = forms.FloatField(label=(_("money")))
+    comment = forms.CharField(label=(_("comment")))

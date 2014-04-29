@@ -4,6 +4,7 @@ from django.views.generic import FormView, RedirectView
 from coffin.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
+from django.core.urlresolvers import reverse
 from .forms import *
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -62,8 +63,7 @@ class RegistrationView(FormView):
                                         first_name=data['first_name'],
                                         last_name=data['last_name'])
         user.save()
-        #TODO: настроить автоматическое попадание в личный кабинет после регистрации
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/cabinet')
 
 
 class CabinetView(TemplateView):
@@ -71,11 +71,22 @@ class CabinetView(TemplateView):
     #TODO: настроить декоратор
 
     def get_context_data(self, **kwargs):
+        if not self.request.user.is_authenticated() or self.request.user.is_anonymous():
+            # return HttpResponseRedirect(reverse('login'))
+            raise ValueError('You are not log in. Please do it.')
         context = super(CabinetView, self).get_context_data(**kwargs)
         if self.request.user.first_name:
             context['current_user'] = self.request.user.first_name
         else:
             context['current_user'] = self.request.user
+
+        context['balances'] = Billing.objects.filter(user=self.request.user)
+        common_balance = 0
+        for i in Billing.objects.filter(user=self.request.user):
+            common_balance += i.money
+        context['common_balance'] = common_balance
+        #TODO: складываю абсолютные значения, не учитывая валюту
+        context['qty_of_balances'] = Billing.objects.filter(user=self.request.user).count()
         return context
 
 
@@ -191,6 +202,7 @@ class TransactionView(TemplateView, FormView):
 
     def form_valid(self, form):
         data = form.cleaned_data
+        # записать факт транзакции
         _ = Transaction.objects.create(user=self.request.user,
                                        billing=Billing.objects.get(id=data['billing_id']),
                                        transaction_type=TransactionType.objects.get(id=data['transaction_type']),
@@ -200,8 +212,68 @@ class TransactionView(TemplateView, FormView):
                                        datetime=datetime.datetime.now(),
                                        comment=data['comment']
                                        )
-        return HttpResponse('/')
+
+        # изменить количество денег на счету
+        balance = Billing.objects.get(id=data['billing_id']).money
+        if data['transaction_type'] == 1:
+            balance += data['money']
+        if data['transaction_type'] == 2:
+            balance -= data['money']
+        Billing.objects.filter(id=data['billing_id']).update(money=balance)
+
+        return HttpResponse('Transaction successfully saved')
 
     def form_invalid(self, form):
         context = super(TransactionView, self).form_invalid(form)
+        return context
+
+
+class TransferView(TemplateView, FormView):
+    template_name = 'transfer.html'
+    form_class = TransferForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TransferView, self).get_context_data(**kwargs)
+        context['my_billings'] = Billing.objects.filter(user=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        Transaction.objects.create(user=self.request.user,
+                                   billing=Billing.objects.get(id=data['billing_id_from']),
+                                   transaction_type=TransactionType.objects.get(id=3),
+                                   category=Category.objects.get(id=16),
+                                   subcategory=Subcategory.objects.get(id=1),
+                                   money=data['money'],
+                                   datetime=datetime.datetime.now(),
+                                   comment=data['comment'])
+        balance = Billing.objects.get(id=data['billing_id_from']).money
+        balance -= data['money']
+        Billing.objects.filter(id=data['billing_id_from']).update(money=balance)
+
+        Transaction.objects.create(user=self.request.user,
+                                   billing=Billing.objects.get(id=data['billing_id_to']),
+                                   transaction_type=TransactionType.objects.get(id=3),
+                                   category=Category.objects.get(id=16),
+                                   subcategory=Subcategory.objects.get(id=1),
+                                   money=data['money'],
+                                   datetime=datetime.datetime.now(),
+                                   comment=data['comment'])
+        balance = Billing.objects.get(id=data['billing_id_to']).money
+        balance += data['money']
+        Billing.objects.filter(id=data['billing_id_to']).update(money=balance)
+
+        return HttpResponse('Transfer successfully saved')
+
+    def form_invalid(self, form):
+        context = super(TransferView, self).form_invalid(form)
+        return context
+
+
+class StatementView(TemplateView):
+    template_name = 'statement.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StatementView, self).get_context_data(**kwargs)
+        context['transactions'] = Transaction.objects.filter(user=self.request.user)
         return context
