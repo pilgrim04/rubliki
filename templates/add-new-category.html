@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New category</title>
+</head>
+<body>
+Добавляем новую категорию
+
+<form method="post">{% csrf_token %}
+    Название:<br/> <input name="category_name" type="text"> <br/><br/>
+    <input type="submit" value="create">
+</form>
+</body>
+</html>

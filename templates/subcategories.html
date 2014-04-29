@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<a href="/my_categories/{{ category_name}}/my_subcategories/add_new_subcategory/">Добавить новую подкатегорию</a>
+
+<h4>Список подкатегорий вот этой категории - {{ category_name }}</h4>
+
+
+
+{% for i in user_subcategories %}
+    <tr>
+        <td>{{ i.subcategory_name }}</td>
+        <br/>
+    </tr>
+{% endfor %}
+</body>
+</html>

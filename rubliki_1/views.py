@@ -8,6 +8,7 @@ from .forms import *
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+import datetime
 
 
 class LoginView(FormView):
@@ -120,5 +121,87 @@ class CategoryView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoryView, self).get_context_data(**kwargs)
+        user_categories = Category.objects.filter(user_id=self.request.user.id).order_by('id')
+        context['user_categories'] = user_categories
         return context
 
+
+class AddCategoryView(TemplateView, FormView):
+    template_name = 'add-new-category.html'
+    form_class = AddCategoryForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AddCategoryView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        repeated_names = Category.objects.filter(user=self.request.user,
+                                                 category_name=data['category_name'])
+        if not repeated_names:
+            _ = Category.objects.create(user=self.request.user,
+                                        category_name=data['category_name'])
+        return HttpResponseRedirect('/my_categories')
+
+    def form_invalid(self, form):
+        context = super(AddCategoryView, self).form_invalid(form)
+        return context
+
+
+# class SubcategoryView(TemplateView):
+#     template_name = 'subcategories.html'
+#
+#     def get_context_data(self, category_name,  **kwargs):
+#         context = super(SubcategoryView, self).get_context_data(**kwargs)
+#         current_category_id = Category.objects.get(user=self.request.user, category_name=category_name).id
+#         context['current_subcategories'] = Subcategory.objects.filter(id=current_category_id)
+#         context['category_name'] = Category.objects.get(user=self.request.user,
+#                                                         category_name=category_name).category_name
+#         return context
+#
+#
+# class AddSubcategoryView(TemplateView, FormView):
+#     template_name = 'add-new-subcategory.html'
+#     form_class = AddSubcategoryForm
+#
+#     def get_context_data(self, category_name, **kwargs):
+#         context = super(AddSubcategoryView, self).get_context_data(**kwargs)
+#         current_category_name = Category.objects.get(user=self.request.user, category_name=category_name).category_name
+#         context['category_name'] = current_category_name
+#         return context
+#
+#     def form_valid(self, form):
+#         data = form.cleaned_data
+#         repeated_names = Subcategory.objects.filter(subcategory_name=data['subcategory_name'])
+#         if not repeated_names:
+#             _ = Subcategory.objects.create(subcategory_name=data['subcategory_name'])
+#         return HttpResponseRedirect('/my_categories/')
+
+
+class TransactionView(TemplateView, FormView):
+    template_name = 'transaction.html'
+    form_class = TransactionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TransactionView, self).get_context_data(**kwargs)
+        context['my_billings'] = Billing.objects.filter(user=self.request.user)
+        context['my_categories'] = Category.objects.filter(user=self.request.user).order_by('id')
+        context['transaction_types'] = TransactionType.objects.all()
+        return context
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        _ = Transaction.objects.create(user=self.request.user,
+                                       billing=Billing.objects.get(id=data['billing_id']),
+                                       transaction_type=TransactionType.objects.get(id=data['transaction_type']),
+                                       category=Category.objects.get(id=data['category_id']),
+                                       subcategory=Subcategory.objects.get(id=1),
+                                       money=data['money'],
+                                       datetime=datetime.datetime.now(),
+                                       comment=data['comment']
+                                       )
+        return HttpResponse('/')
+
+    def form_invalid(self, form):
+        context = super(TransactionView, self).form_invalid(form)
+        return context

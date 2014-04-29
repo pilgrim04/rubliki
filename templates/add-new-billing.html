@@ -12,13 +12,13 @@
     Тип счета:<br/>
     {% for i in billing_type %}
          {{ i.get_billing_type_display() }}
-        <input name="billing_type" type="radio" value="{{ i.id }}">{{ i.id }}<br/>
+        <input name="billing_type" type="radio" value="{{ i.id }}"><br/>
     {% endfor %}<br/>
 
     Валюта:<br/>
     {% for j in currency %}
         {{ j.get_currency_display() }}
-        <input name="currency" type="radio" value="{{ j.id }}">{{ j.id }}<br/>
+        <input name="currency" type="radio" value="{{ j.id }}"><br/>
     {% endfor %}<br/>
 
     Сколько денег сейчас на счете: <br/>

@@ -4,9 +4,16 @@
     <title>Мои категории</title>
 </head>
 <body>
-Список категорий:
-1.
-2.
-3.
+<a href="/my_categories/add_new_category/">Добавить новую категорию</a>
+
+<h4>Список категорий</h4>
+
+{% for i in user_categories %}
+    <tr>
+        <td>{{ i.category_name }}</td>
+{#        <a href="{{ i.category_name }}/my_subcategories/">go</a>#}
+        <br/>
+    </tr>
+{% endfor %}
 </body>
 </html>

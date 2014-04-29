@@ -62,3 +62,23 @@ class AddBillingForm(forms.Form):
     billing_type = forms.IntegerField(label=(_("billing_type")))
     currency = forms.IntegerField(label=(_("currency")))
     money = forms.FloatField(label=(_("money")))
+
+
+class AddCategoryForm(forms.Form):
+    category_name = forms.CharField(label=(_("category_name")))
+
+
+# class AddSubcategoryForm(forms.Form):
+#     subcategory_name = forms.CharField(label=(_("subcategory_name")))
+#
+#     # def __init__(self, current_category_id, *args, **kwargs):
+#     #     return super(AddSubcategoryForm, self).__init__(current_category_id, *args, **kwargs)
+
+
+class TransactionForm(forms.Form):
+    billing_id = forms.IntegerField(label=(_("billing_id")))
+    category_id = forms.IntegerField(label=(_("category_id")))
+    transaction_type = forms.IntegerField(label=(_("transaction_type")))
+    money = forms.FloatField(label=(_("money")))
+    comment = forms.CharField(label=(_("comment")))
+

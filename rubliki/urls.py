@@ -22,6 +22,12 @@ urlpatterns = patterns('rubliki_1.views',
     url(r'^my_billings/add_new_billing/$', AddBillingView.as_view(), name='add-new-billing'),
 
     url(r'^my_categories/$', CategoryView.as_view(), name='category'),
+    url(r'^my_categories/add_new_category/$', AddCategoryView.as_view(), name='add-new-category'),
+    #
+    # url(r'^my_categories/(?P<category_name>\w+)/my_subcategories/$', SubcategoryView.as_view(), name='subcategory'),
+    # url(r'^my_categories/(?P<category_name>\w+)/my_subcategories/add_new_subcategory/$', AddSubcategoryView.as_view(), name='add-new-subcategory'),
+
+    url(r'^transaction/$', TransactionView.as_view(), name='transaction'),
 
     url(r'^edit/$', EditProfileView.as_view(), name='edit'),
 
