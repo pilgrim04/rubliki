@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
 <head>
     <title>Регистрация нового пользователя</title>
 </head>
 <body>
+{% block content %}
 Добро пожаловать в Мир Рубликов!
 
 <form method="post">{% csrf_token %}
@@ -17,6 +19,6 @@
     <input type="submit" value="Зарегистрироваться">
 
 </form>
-
+{% endblock content %}
 </body>
 </html>

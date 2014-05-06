@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
 <head>
     <title>Мои категории</title>
 </head>
 <body>
+{% block content %}
+
 <a href="/cabinet/">В кабинет</a><br/>
 <a href="/my_categories/add_new_category/">Добавить новую категорию</a>
 
@@ -16,5 +19,7 @@
         <br/>
     </tr>
 {% endfor %}
+
+{% endblock content %}
 </body>
 </html>

@@ -24,7 +24,7 @@ class LoginView(FormView):
         if self.request.user.is_authenticated():
             raise Exception('Already login')
         auth_login(self.request, form.get_user())
-        return HttpResponseRedirect('/cabinet')
+        return HttpResponseRedirect('/my_billings')
 
     def form_invalid(self, form):
         context = super(LoginView, self).form_invalid(form)
@@ -132,7 +132,7 @@ class CategoryView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoryView, self).get_context_data(**kwargs)
-        user_categories = Category.objects.filter(user_id=self.request.user.id).order_by('id')
+        user_categories = Category.objects.filter(user_id__in=(self.request.user.id, 1)).order_by('id')
         context['user_categories'] = user_categories
         return context
 
@@ -143,6 +143,7 @@ class AddCategoryView(TemplateView, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(AddCategoryView, self).get_context_data(**kwargs)
+        context['category_type'] = CategoryTypes.objects.all()
         return context
 
     def form_valid(self, form):
@@ -151,7 +152,8 @@ class AddCategoryView(TemplateView, FormView):
                                                  category_name=data['category_name'])
         if not repeated_names:
             _ = Category.objects.create(user=self.request.user,
-                                        category_name=data['category_name'])
+                                        category_name=data['category_name'],
+                                        category_type=data['category_type'])
         return HttpResponseRedirect('/my_categories')
 
     def form_invalid(self, form):
@@ -196,7 +198,7 @@ class TransactionView(TemplateView, FormView):
     def get_context_data(self, **kwargs):
         context = super(TransactionView, self).get_context_data(**kwargs)
         context['my_billings'] = Billing.objects.filter(user=self.request.user)
-        context['my_categories'] = Category.objects.filter(user=self.request.user).order_by('id')
+        context['my_categories'] = Category.objects.filter(user__in=(self.request.user, 1)).order_by('id')
         context['transaction_types'] = TransactionType.objects.all()
         return context
 
@@ -276,4 +278,11 @@ class StatementView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StatementView, self).get_context_data(**kwargs)
         context['transactions'] = Transaction.objects.filter(user=self.request.user)
+        context['total_income'] = 0
+        context['total_spent'] = 0
+        for i in Transaction.objects.filter(user=self.request.user):
+            if i.transaction_type_id == 1:
+                context['total_income'] += i.money
+            if i.transaction_type_id == 2:
+                context['total_spent'] -= i.money
         return context

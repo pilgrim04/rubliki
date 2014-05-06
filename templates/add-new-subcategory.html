@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
 <head>
     <title></title>
 </head>
 <body>
+{% block content %}
 Добавляем новую подкатегорию
 <br/><br/>
 <br/>тестовый вывод названия категории -- {{ category_name }}
@@ -14,5 +16,6 @@
     Название:<br/> <input name="subcategory_name" type="text"> <br/><br/>
     <input type="submit" value="create">
 </form>
+{% endblock content %}
 </body>
 </html>

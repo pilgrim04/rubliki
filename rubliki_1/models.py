@@ -38,9 +38,14 @@ class Billing(models.Model):
     money = models.FloatField(default=0)
 
 
+class CategoryTypes(models.Model):
+    category_type = models.SmallIntegerField(choices=CATEGORY_TYPE_CHOICES)
+
+
 class Category(models.Model):
     category_name = models.CharField(max_length=256)
     user = models.ForeignKey(User)
+    category_type = models.ForeignKey(CategoryTypes)
 
 
 class Subcategory(models.Model):

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
 <head>
     <title></title>
 </head>
 <body>
+{% block content %}
+
 
 <a href="/cabinet/">В кабинет</a><br/>
 <a href="/statement/">Все транзакции</a><br/>
@@ -46,5 +49,7 @@
 <input type="submit" value="провести транзакцию">
 
 </form>
+
+{% endblock content %}
 </body>
 </html>

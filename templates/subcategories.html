@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
 <head>
     <title></title>
 </head>
 <body>
+{% block content %}
 <a href="/my_categories/{{ category_name}}/my_subcategories/add_new_subcategory/">Добавить новую подкатегорию</a>
 
 <h4>Список подкатегорий вот этой категории - {{ category_name }}</h4>
@@ -16,5 +18,7 @@
         <br/>
     </tr>
 {% endfor %}
+
+{% endblock content %}
 </body>
 </html>

@@ -31,3 +31,11 @@ CURRENCY_CHOICES = (
     (USD, _('usd')),
     (EUR, _('eur'))
 )
+
+
+DEBIT = 1
+CREDIT = 2
+CATEGORY_TYPE_CHOICES = (
+    (DEBIT, _('debit')),
+    (CREDIT, _('credit')),
+)

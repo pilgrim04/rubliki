@@ -1,14 +1,26 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
 <head>
     <title>New category</title>
 </head>
 <body>
+{% block content %}
 Добавляем новую категорию
 
 <form method="post">{% csrf_token %}
-    Название:<br/> <input name="category_name" type="text"> <br/><br/>
+    Название:<input name="category_name" type="text"> <br/>
+    Тип категории:
+
+    {% for i in category_type %}
+             {{ i.get_category_type_display() }}
+            <input name="category_type" type="radio" value="{{ i.id }}"><br/>
+        {% endfor %}
+
+
+    <br/>
     <input type="submit" value="create">
 </form>
+{% endblock content %}
 </body>
 </html>

@@ -50,11 +50,19 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'rubliki_1', ['Billing'])
 
+        # Adding model 'CategoryTypes'
+        db.create_table(u'rubliki_1_categorytypes', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('category_type', self.gf('django.db.models.fields.SmallIntegerField')()),
+        ))
+        db.send_create_signal(u'rubliki_1', ['CategoryTypes'])
+
         # Adding model 'Category'
         db.create_table(u'rubliki_1_category', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('category_name', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['rubliki_1.User'])),
+            ('category_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['rubliki_1.CategoryTypes'])),
         ))
         db.send_create_signal(u'rubliki_1', ['Category'])
 
@@ -101,6 +109,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Billing'
         db.delete_table(u'rubliki_1_billing')
 
+        # Deleting model 'CategoryTypes'
+        db.delete_table(u'rubliki_1_categorytypes')
+
         # Deleting model 'Category'
         db.delete_table(u'rubliki_1_category')
 
@@ -132,8 +143,14 @@ class Migration(SchemaMigration):
         u'rubliki_1.category': {
             'Meta': {'object_name': 'Category'},
             'category_name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'category_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['rubliki_1.CategoryTypes']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['rubliki_1.User']"})
+        },
+        u'rubliki_1.categorytypes': {
+            'Meta': {'object_name': 'CategoryTypes'},
+            'category_type': ('django.db.models.fields.SmallIntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'rubliki_1.currency': {
             'Meta': {'object_name': 'Currency'},

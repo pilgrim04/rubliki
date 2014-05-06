@@ -66,6 +66,7 @@ class AddBillingForm(forms.Form):
 
 class AddCategoryForm(forms.Form):
     category_name = forms.CharField(label=(_("category_name")))
+    category_type = forms.IntegerField(label=(_("category_type")))
 
 
 # class AddSubcategoryForm(forms.Form):

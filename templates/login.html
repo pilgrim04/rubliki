@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html>
     <head>
         <title>Welcome to Rubliki.ru!</title>
     </head>
 
     <body>
-
+{% block content %}
         Welcome to Rubliki.ru!
 
         <form method="post">{% csrf_token %}
@@ -14,6 +15,6 @@
             <div><input type="submit" value="войти"/>
         </form>
         <a href="/registration">Создать новый аккаунт</a>
-
+{% endblock content %}
     </body>
 </html>
