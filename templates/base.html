@@ -39,12 +39,40 @@
                         {% endif %}
                     </p>
                     <ul class="nav">
-                        <li><a href="/cabinet">Мой кабинет</a></li>
-                        <li><a href="/edit">Мой кабинет(ред.)</a></li>
-                        <li><a href="/my_billings">Мои счета</a></li>
-                        <li><a href="/my_categories">Мои категории</a></li>
-                        <li><a href="/transaction">Новая транзакция</a></li>
-                        <li><a href="/statement">Мои транзакции</a></li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Кабинет <b class="caret"></b></a>
+                            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                                <li><a href="/cabinet">Мой кабинет</a></li>
+                                <li><a href="/edit">Редактировать мой кабинет</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Счета <b class="caret"></b></a>
+                            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                                <li><a href="/my_billings">Мои счета</a></li>
+                                <li><a href="/add-new-billing">Добавить новый счет</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Категории <b class="caret"></b></a>
+                            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                                <li><a href="/my_categories">Мои категории</a></li>
+                                <li><a href="/add_new_category">Добавить новую категорию</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Транзакции <b class="caret"></b></a>
+                            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                                <li><a href="/transaction">Провести транзакцию (приход/расход)</a></li>
+                                <li><a href="/transaction/transfer">Провести трансфер</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="/statement">Статистика</a></li>
                         <li><a href="/logout">Выход</a></li>
                     </ul>
                 </div>

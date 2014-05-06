@@ -132,7 +132,7 @@ class CategoryView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoryView, self).get_context_data(**kwargs)
-        user_categories = Category.objects.filter(user_id=self.request.user.id).order_by('id')
+        user_categories = Category.objects.filter(user_id__in=(self.request.user.id, 1)).order_by('id')
         context['user_categories'] = user_categories
 
         return context
@@ -201,7 +201,7 @@ class TransactionView(TemplateView, FormView):
     def get_context_data(self, **kwargs):
         context = super(TransactionView, self).get_context_data(**kwargs)
         context['my_billings'] = Billing.objects.filter(user=self.request.user)
-        context['my_categories'] = Category.objects.filter(user=self.request.user).order_by('id')
+        context['my_categories'] = Category.objects.filter(user__in=(self.request.user, 1)).order_by('id')
         context['transaction_types'] = TransactionType.objects.all()
         return context
 

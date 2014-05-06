@@ -6,44 +6,40 @@
 </head>
 <body>
 {% block content %}
-<a href="/cabinet/">В кабинет</a><br/><br/><br/>
+    Перевод денег с одного счета на другой:<br/><br/>
+    <form method="post">{% csrf_token %}
+
+        С какого счета списать:<br/><br/>
+        {% for bill in my_billings %}
+
+            <input type="radio" name="billing_id_from" value={{ bill.id }}>{{ bill.billing_name }}
+            (в валюте '{{ bill.currency.get_currency_display() }}')
+            (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
+
+            <br/>
 
 
-Перевод денег с одного счета на другой:<br/><br/>
-
-<form method="post">{% csrf_token %}
-
-С какого счета списать:<br/><br/>
-{% for bill in my_billings %}
-
-    <input type="radio" name="billing_id_from" value={{ bill.id }}>{{ bill.billing_name }}
-    (в валюте '{{ bill.currency.get_currency_display() }}')
-    (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
-
-    <br/>
+        {% endfor %}<br/>
 
 
-{% endfor %}<br/>
+        На какой счет начислить:<br/><br/>
+        {% for bill in my_billings %}
+
+            <input type="radio" name="billing_id_to" value={{ bill.id }}>{{ bill.billing_name }}
+            (в валюте '{{ bill.currency.get_currency_display() }}')
+            (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
+
+            <br/>
 
 
-На какой счет начислить:<br/><br/>
-{% for bill in my_billings %}
+        {% endfor %}
+        <br/><br/>
+        Сколько денег перевести: <input type="number" name="money"><br/><br/>
 
-    <input type="radio" name="billing_id_to" value={{ bill.id }}>{{ bill.billing_name }}
-    (в валюте '{{ bill.currency.get_currency_display() }}')
-    (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
+        Ваш комментарий: <input type="text" name="comment"><br/><br/>
+        <input type="submit" value="сделать перевод">
 
-    <br/>
-
-
-{% endfor %}
-<br/><br/>
-Сколько денег перевести: <input type="number" name="money"><br/><br/>
-
-Ваш комментарий: <input type="text" name="comment"><br/><br/>
-<input type="submit" value="сделать перевод">
-
-</form>
+    </form>
 {% endblock content %}
 </body>
 </html>

@@ -6,47 +6,38 @@
 </head>
 <body>
 {% block content %}
-
-
-<a href="/cabinet/">В кабинет</a><br/>
-<a href="/statement/">Все транзакции</a><br/>
-<a href="/transaction/transfer/">Сделать перевод со счета на счет</a><br/>
 <br/>
-
 Проводим транзакцию:<br/><br/>
 
 <form method="post">{% csrf_token %}
-Укажите тип транзакции: <br/>
-{% for types in transaction_types %}
-    <input type="radio" name="transaction_type" value={{ types.id }}> {{ types.get_transaction_type_display() }} <br/>
+    Укажите тип транзакции: <br/>
 
-{% endfor %}<br/><br/>
+    {% for types in transaction_types %}
+        <input type="radio" name="transaction_type" value={{ types.id }}> {{ types.get_transaction_type_display() }} <br/>
+    {% endfor %}
+    <br/><br/>
 
-по какому счету идет транзакция:<br/>
-{% for bill in my_billings %}
-    <input type="radio" name="billing_id" value={{ bill.id }}>{{ bill.billing_name }}
-    (в валюте '{{ bill.currency.get_currency_display() }}')
-    (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
-
-
-    <br/>
-{% endfor %}
-
+    по какому счету идет транзакция:<br/>
+    {% for bill in my_billings %}
+        <input type="radio" name="billing_id" value={{ bill.id }}>{{ bill.billing_name }}
+        (в валюте '{{ bill.currency.get_currency_display() }}')
+        (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
+        <br/>
+    {% endfor %}
     <br/>
 
-В какую из категорий идет транзакция:<br/>
-{% for cat in my_categories %}
-    <input type="radio" name="category_id" value={{ cat.id }}>
-    {{ cat.category_name }}
-
+    В какую из категорий идет транзакция:<br/>
+    {% for cat in my_categories %}
+        <input type="radio" name="category_id" value={{ cat.id }}>
+        {{ cat.category_name }}
+        <br/>
+    {% endfor %}
     <br/>
-{% endfor %}
-<br/>
 
-Сколько денег проходит по транзакции: <input type="number" name="money"><br/><br/>
+    Сколько денег проходит по транзакции: <input type="number" name="money"><br/><br/>
 
-Ваш комментарий: <input type="text" name="comment"><br/><br/>
-<input type="submit" value="провести транзакцию">
+    Ваш комментарий: <input type="text" name="comment"><br/><br/>
+    <input type="submit" value="провести транзакцию">
 
 </form>
 
