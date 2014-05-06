@@ -4,12 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 
 INCOME_TRANSACTION = 1
 OUTCOME_TRANSACTION = 2
-TRANSFER_TRANSACTION = 3
 
 TRANSACTION_TYPE_CHOICES = (
     (INCOME_TRANSACTION, _('income')),
     (OUTCOME_TRANSACTION, _('outcome')),
-    (TRANSFER_TRANSACTION, _('transfer'))
 )
 
 
@@ -22,7 +20,6 @@ BILLING_TYPE_CHOICES = (
 )
 
 
-
 RUR = 1
 USD = 2
 EUR = 3
@@ -33,8 +30,8 @@ CURRENCY_CHOICES = (
 )
 
 
-DEBIT = 1
-CREDIT = 2
+DEBIT = 1  # категория, по которой деньги со счета уходят
+CREDIT = 2  # категория, по которой деньги на счет поступают
 CATEGORY_TYPE_CHOICES = (
     (DEBIT, _('debit')),
     (CREDIT, _('credit')),

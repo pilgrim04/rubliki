@@ -132,8 +132,9 @@ class CategoryView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoryView, self).get_context_data(**kwargs)
-        user_categories = Category.objects.filter(user_id__in=(self.request.user.id, 1)).order_by('id')
+        user_categories = Category.objects.filter(user_id=self.request.user.id).order_by('id')
         context['user_categories'] = user_categories
+
         return context
 
 
@@ -153,14 +154,16 @@ class AddCategoryView(TemplateView, FormView):
         if not repeated_names:
             _ = Category.objects.create(user=self.request.user,
                                         category_name=data['category_name'],
-                                        category_type=data['category_type'])
+                                        category_type=CategoryTypes.objects.get(category_type=data['category_type']))
         return HttpResponseRedirect('/my_categories')
 
     def form_invalid(self, form):
         context = super(AddCategoryView, self).form_invalid(form)
         return context
 
-
+# # ------------SUB------------------------
+#
+#
 # class SubcategoryView(TemplateView):
 #     template_name = 'subcategories.html'
 #
@@ -189,7 +192,7 @@ class AddCategoryView(TemplateView, FormView):
 #         if not repeated_names:
 #             _ = Subcategory.objects.create(subcategory_name=data['subcategory_name'])
 #         return HttpResponseRedirect('/my_categories/')
-
+# # ------------SUB------------------------
 
 class TransactionView(TemplateView, FormView):
     template_name = 'transaction.html'
@@ -198,7 +201,7 @@ class TransactionView(TemplateView, FormView):
     def get_context_data(self, **kwargs):
         context = super(TransactionView, self).get_context_data(**kwargs)
         context['my_billings'] = Billing.objects.filter(user=self.request.user)
-        context['my_categories'] = Category.objects.filter(user__in=(self.request.user, 1)).order_by('id')
+        context['my_categories'] = Category.objects.filter(user=self.request.user).order_by('id')
         context['transaction_types'] = TransactionType.objects.all()
         return context
 
@@ -209,7 +212,7 @@ class TransactionView(TemplateView, FormView):
                                        billing=Billing.objects.get(id=data['billing_id']),
                                        transaction_type=TransactionType.objects.get(id=data['transaction_type']),
                                        category=Category.objects.get(id=data['category_id']),
-                                       subcategory=Subcategory.objects.get(id=1),
+                                       # subcategory=Subcategory.objects.get(id=1),
                                        money=data['money'],
                                        datetime=datetime.datetime.now(),
                                        comment=data['comment']
@@ -223,7 +226,7 @@ class TransactionView(TemplateView, FormView):
             balance -= data['money']
         Billing.objects.filter(id=data['billing_id']).update(money=balance)
 
-        return HttpResponse('Transaction successfully saved')
+        return HttpResponseRedirect('/statement')
 
     def form_invalid(self, form):
         context = super(TransactionView, self).form_invalid(form)
@@ -243,9 +246,8 @@ class TransferView(TemplateView, FormView):
         data = form.cleaned_data
         Transaction.objects.create(user=self.request.user,
                                    billing=Billing.objects.get(id=data['billing_id_from']),
-                                   transaction_type=TransactionType.objects.get(id=3),
-                                   category=Category.objects.get(id=16),
-                                   subcategory=Subcategory.objects.get(id=1),
+                                   transaction_type=TransactionType.objects.get(id=2),
+                                   category=Category.objects.get(id=2),
                                    money=data['money'],
                                    datetime=datetime.datetime.now(),
                                    comment=data['comment'])
@@ -255,9 +257,8 @@ class TransferView(TemplateView, FormView):
 
         Transaction.objects.create(user=self.request.user,
                                    billing=Billing.objects.get(id=data['billing_id_to']),
-                                   transaction_type=TransactionType.objects.get(id=3),
-                                   category=Category.objects.get(id=16),
-                                   subcategory=Subcategory.objects.get(id=1),
+                                   transaction_type=TransactionType.objects.get(id=1),
+                                   category=Category.objects.get(id=1),
                                    money=data['money'],
                                    datetime=datetime.datetime.now(),
                                    comment=data['comment'])
@@ -265,7 +266,7 @@ class TransferView(TemplateView, FormView):
         balance += data['money']
         Billing.objects.filter(id=data['billing_id_to']).update(money=balance)
 
-        return HttpResponse('Transfer successfully saved')
+        return HttpResponseRedirect('/statement')
 
     def form_invalid(self, form):
         context = super(TransferView, self).form_invalid(form)

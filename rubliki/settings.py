@@ -123,7 +123,6 @@ INSTALLED_APPS = (
     'rubliki_1',
     'south'
 )
-
 AUTH_USER_MODEL = 'rubliki_1.User'
 
 # A sample logging configuration. The only tangible logging

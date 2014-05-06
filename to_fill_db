@@ -1,0 +1,12 @@
+insert INTO rubliki_1_billingtypes (id, billing_type) VALUES (1, 1);
+insert INTO rubliki_1_billingtypes (id, billing_type) VALUES (2, 2);
+
+insert INTO rubliki_1_categorytypes (id, category_type) VALUES (1, 1);
+insert INTO rubliki_1_categorytypes (id, category_type) VALUES (2, 2);
+
+insert into rubliki_1_currency (id, currency) VALUES (1,1);
+insert into rubliki_1_currency (id, currency) VALUES (2,2);
+insert into rubliki_1_currency (id, currency) VALUES (3,3);
+
+insert into rubliki_1_transactiontype (id, transaction_type) VALUES (1,1);
+insert into rubliki_1_transactiontype (id, transaction_type) VALUES (2,2);

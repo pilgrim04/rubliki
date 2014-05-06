@@ -12,9 +12,10 @@
         <form method="post">{% csrf_token %}
             <div><input id="id_username" name="login" type="text" onFocus="checkFocus(this, 'логин')" onBlur="checkBlur(this, 'логин')" /></div>
             <div><input id="id_password" name="password" type="password" onFocus="checkFocus(this, 'пароль')" onBlur="checkBlur(this, 'пароль')"/></div>
-            <div><input type="submit" value="войти"/>
+            <div><input class="btn btn-primary btn-small" type="submit" value="войти"/>
         </form>
-        <a href="/registration">Создать новый аккаунт</a>
+
+        <a class="btn btn-primary btn-small"href="/registration">Создать новый аккаунт</a>
 {% endblock content %}
     </body>
 </html>

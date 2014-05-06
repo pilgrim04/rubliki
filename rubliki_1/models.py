@@ -35,7 +35,7 @@ class Billing(models.Model):
     billing_name = models.CharField(max_length=256)
     billing_type = models.ForeignKey(BillingTypes)
     currency = models.ForeignKey(Currency)
-    money = models.FloatField(default=0)
+    money = models.FloatField(blank=True, default=0)
 
 
 class CategoryTypes(models.Model):
@@ -48,9 +48,9 @@ class Category(models.Model):
     category_type = models.ForeignKey(CategoryTypes)
 
 
-class Subcategory(models.Model):
-    category = models.ForeignKey(Category)
-    subcategory_name = models.CharField(max_length=256)
+# class Subcategory(models.Model):
+#     category = models.ForeignKey(Category)
+#     subcategory_name = models.CharField(max_length=256)
 
 
 class TransactionType(models.Model):
@@ -62,7 +62,7 @@ class Transaction(models.Model):
     billing = models.ForeignKey(Billing)
     transaction_type = models.ForeignKey(TransactionType)
     category = models.ForeignKey(Category)
-    subcategory = models.ForeignKey(Subcategory)
+#    subcategory = models.ForeignKey(Subcategory)
     money = models.FloatField(default=0)
     datetime = models.DateTimeField()
     comment = models.TextField()

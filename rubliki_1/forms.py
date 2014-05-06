@@ -71,9 +71,6 @@ class AddCategoryForm(forms.Form):
 
 # class AddSubcategoryForm(forms.Form):
 #     subcategory_name = forms.CharField(label=(_("subcategory_name")))
-#
-#     # def __init__(self, current_category_id, *args, **kwargs):
-#     #     return super(AddSubcategoryForm, self).__init__(current_category_id, *args, **kwargs)
 
 
 class TransactionForm(forms.Form):
