@@ -1,0 +1,32 @@
+
+*.class
+*.log
+*.log~
+*.pyc
+*.pyo
+*.py~
+*.sh~
+*.txt~
+.coverage
+.deployables
+.DS_Store
+_docs
+main/settings/local.py
+main/static/assets
+bin
+env
+media/
+sh/*
+tempfiles/
+tmp/
+
+# Vim+rope stuff. Please, don't remove this without straight reasons.
+*.swl
+*.swm
+*.swn
+*.swo
+*.swp
+.ropeproject
+
+#PyCharm config
+.idea/
