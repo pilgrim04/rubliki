@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from django.views.generic import FormView, RedirectView
+from django.views.generic import FormView, RedirectView, View
 from coffin.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
@@ -21,8 +21,6 @@ class LoginView(FormView):
         return context
 
     def form_valid(self, form):
-        if self.request.user.is_authenticated():
-            raise Exception('Already login')
         auth_login(self.request, form.get_user())
         return HttpResponseRedirect('/my_billings')
 
@@ -287,3 +285,6 @@ class StatementView(TemplateView):
             if i.transaction_type_id == 2:
                 context['total_spent'] -= i.money
         return context
+
+class GrafikiView(TemplateView):
+    template_name = 'grafiki.html'

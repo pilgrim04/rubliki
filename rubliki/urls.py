@@ -12,6 +12,7 @@ urlpatterns = patterns('rubliki_1.views',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
+    url(r'^$', LoginView.as_view(), name='login'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^registration/$', RegistrationView.as_view(), name='registration'),
@@ -31,8 +32,10 @@ urlpatterns = patterns('rubliki_1.views',
     url(r'^transaction/transfer/$', TransferView.as_view(), name='transfer'),
 
     url(r'^statement/$', StatementView.as_view(), name='statement'),
+    url(r'^grafiki/$', GrafikiView.as_view(), name='grafiki'),
 
     url(r'^edit/$', EditProfileView.as_view(), name='edit'),
+
 
     # url(r'^register_ok/', RegistrationCompleteView.as_view(), name='register_ok'),
     # Uncomment the next line to enable the admin:
