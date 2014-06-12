@@ -11,6 +11,15 @@
 
 {% block content %}
     <br/>
+
+    <ul>
+        <li><a id="result_chart_btn" href="/grafiki">ПОСМОТРЕТЬ ГРАФИК</a></li>
+    </ul>
+
+    <select>
+        <option value=""></option>
+    </select>
+
     <table width="100%" align="left">
         <th>счет</th>
         <th>категория</th>
@@ -37,24 +46,24 @@
             </tr>
 
         {% endfor %}
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>итого получено:  {{ total_income }}</td>
-        <td></td>
-        <td></td>
-
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>итого потрачено:  {{ total_spent }}</td>
-        <td></td>
-        <td></td>
-
-    </tr>
+{#    <tr>#}
+{#        <td></td>#}
+{#        <td></td>#}
+{#        <td></td>#}
+{#        <td>итого получено:  {{ total_income }}</td>#}
+{#        <td></td>#}
+{#        <td></td>#}
+{##}
+{#    </tr>#}
+{#    <tr>#}
+{#        <td></td>#}
+{#        <td></td>#}
+{#        <td></td>#}
+{#        <td>итого потрачено:  {{ total_spent }}</td>#}
+{#        <td></td>#}
+{#        <td></td>#}
+{##}
+{#    </tr>#}
     </table>
 
 {% endblock content %}

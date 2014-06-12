@@ -2,36 +2,74 @@
 {% extends "base.html" %}
 <html>
 <head>
-    <title>Редактирование профиля</title>
+    <title>Графики</title>
 </head>
 
 <body>
+
 {% block content %}
-Графики
+    <ul>
+        <li><a id="result_chart_btn" href="/statement">ПОСМОТРЕТЬ ТАБЛИЦУ</a></li>
+    </ul>
     <script type="text/javascript">
         $(function () {
             $('#container').highcharts({
                 chart: {
-                    type: 'bar'
+                    type: 'line'
                 },
                 title: {
-                    text: 'Fruit Consumption'
+                    text: 'Расходы по категориям'
                 },
                 xAxis: {
-                    categories: ['Apples', 'Bananas', 'Oranges']
+                    categories:
+                            [
+                            {% for i in dsfgfgtg %}
+                                {{ i }},
+                            {% endfor %}
+                            ]
+
+{#                            ['Ольге',#}
+{#                            'кв.пл.',#}
+{#                            'питание',#}
+{#                            'вкусности',#}
+{#                            'проезд',#}
+{#                            'сигареты',#}
+{#                            'кафе работа',#}
+{#                            'связь',#}
+{#                            'детям',#}
+{#                            'подарки',#}
+{#                            'хозяйство',#}
+{#                            'развлечения',#}
+{#                            'аптека']#}
                 },
                 yAxis: {
                     title: {
-                        text: 'Fruit eaten'
+                        text: 'RUR'
                     }
                 },
                 series: [{
-                    name: 'Jane',
-                    data: [1, 0, 4]
-                }, {
-                    name: 'John',
-                    data: [5, 7, 3]
-                }],
+                    name: '',
+                    data:
+                            [
+                                {% for i in money %}
+                                    {{ i }},
+                                {% endfor %}
+                            ]
+
+{#                        [13000,#}
+{#                        2411,#}
+{#                        9414,#}
+{#                        1749,#}
+{#                        3350,#}
+{#                        1719,#}
+{#                        5058,#}
+{#                        700,#}
+{#                        457,#}
+{#                        1268,#}
+{#                        1264,#}
+{#                        4449,#}
+{#                        1291]#}
+                }]
             });
         });
     </script>
@@ -40,7 +78,7 @@
 
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
-<div id="container" style="height: 300px"></div>
+<div id="container" style="height: 600px"></div>
 {% endblock content %}
 </body>
 </html>

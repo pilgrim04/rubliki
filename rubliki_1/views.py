@@ -130,8 +130,10 @@ class CategoryView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoryView, self).get_context_data(**kwargs)
-        user_categories = Category.objects.filter(user_id__in=(self.request.user.id, 1)).order_by('id')
-        context['user_categories'] = user_categories
+        user_categories_income = Category.objects.filter(user_id__in=(self.request.user.id, 1), category_type=1).order_by('category_name')
+        user_categories_outcome = Category.objects.filter(user_id__in=(self.request.user.id, 1), category_type=2).order_by('category_name')
+        context['user_categories_income'] = user_categories_income
+        context['user_categories_outcome'] = user_categories_outcome
 
         return context
 
@@ -212,7 +214,7 @@ class TransactionView(TemplateView, FormView):
                                        category=Category.objects.get(id=data['category_id']),
                                        # subcategory=Subcategory.objects.get(id=1),
                                        money=data['money'],
-                                       datetime=datetime.datetime.now(),
+                                       datetime=datetime.now(),
                                        comment=data['comment']
                                        )
 
@@ -270,7 +272,7 @@ class TransferView(TemplateView, FormView):
         context = super(TransferView, self).form_invalid(form)
         return context
 
-
+from datetime import datetime, date
 class StatementView(TemplateView):
     template_name = 'statement.html'
 
@@ -284,7 +286,50 @@ class StatementView(TemplateView):
                 context['total_income'] += i.money
             if i.transaction_type_id == 2:
                 context['total_spent'] -= i.money
+        months = []
+        days = []
+        for i in Transaction.objects.filter(user=self.request.user):
+            new_month = datetime.date(i.datetime).timetuple().tm_mon
+            if new_month not in months:
+                months.append(new_month)
+            new_day = datetime.date(i.datetime).timetuple().tm_mday
+            if new_day not in days:
+                days.append(new_day)
+        print 'now:', datetime.now()
+        all_transactions = Transaction.objects.all()
+        last_transaction = Transaction.objects.filter(user=self.request.user)[len(all_transactions)-1:]
+        curr_day = datetime.date(datetime.now()).timetuple().tm_mday
+        print curr_day
+        for i in last_transaction:
+            print 'last: ', i.datetime
+            last_day = datetime.date(i.datetime).timetuple().tm_mday
+            print 'last:', last_day
+            delta = curr_day - last_day
+            print 'delta: ', delta
+        print months  # вытащил месяцы, в которые проходили транзакции
+        print days
         return context
 
 class GrafikiView(TemplateView):
     template_name = 'grafiki.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GrafikiView, self).get_context_data(**kwargs)
+        user_categories_outcome = Category.objects.filter(user_id__in=(self.request.user.id, 1), category_type=2).order_by('category_name')
+        context['user_categories_outcome'] = user_categories_outcome
+
+        my_dict = dict()
+        for trans in Transaction.objects.filter(user_id=self.request.user,
+                                                transaction_type_id=2,
+                                                category_id__gt=2):  # исключаю категорию "трансферы" с ид=1 и ид=2
+            my_dict[trans.category.category_name] = trans.money
+        context['categories'] = my_dict.keys()
+        context['money'] = my_dict.values()
+        #TODO: берутся только последние транзакции по каждой категории
+        #TODO: а надо брать все транзакции в категории и суммировать
+        #TODO: для теста можно попробовать сделать таблицу html
+
+        print context['categories']
+        print context['money']
+
+        return context

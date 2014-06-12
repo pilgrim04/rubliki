@@ -6,41 +6,62 @@
 </head>
 <body>
 {% block content %}
-<br/>
-Проводим транзакцию:<br/><br/>
+{#<br/>#}
+{#Проводим транзакцию:<br/><br/>#}
 
 <form method="post">{% csrf_token %}
-    Укажите тип транзакции: <br/>
-
-    {% for types in transaction_types %}
-        <input type="radio" name="transaction_type" value={{ types.id }}> {{ types.get_transaction_type_display() }} <br/>
-    {% endfor %}
-    <br/><br/>
-
-    по какому счету идет транзакция:<br/>
-    {% for bill in my_billings %}
-        <input type="radio" name="billing_id" value={{ bill.id }}>{{ bill.billing_name }}
-        (в валюте '{{ bill.currency.get_currency_display() }}')
-        (тип счета '{{ bill.billing_type.get_billing_type_display() }}')
-        <br/>
-    {% endfor %}
-    <br/>
-
-    В какую из категорий идет транзакция:<br/>
-    {% for cat in my_categories %}
-        <input type="radio" name="category_id" value={{ cat.id }}>
-        {{ cat.category_name }}
-        <br/>
-    {% endfor %}
-    <br/>
-
-    Сколько денег проходит по транзакции: <input type="number" name="money"><br/><br/>
-
-    Ваш комментарий: <input type="text" name="comment"><br/><br/>
-    <input type="submit" value="провести транзакцию">
-
+    <table>
+        <tr>
+            <td>
+                Тип транзакции:
+            </td>
+            <td>
+                <select name="transaction_type">
+                    {% for types in transaction_types %}
+                        <option value="{{ types.id }}" >{{ types.get_transaction_type_display() }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Счет:
+            </td>
+            <td>
+                <select name="billing_id">
+                    {% for bill in my_billings %}
+                        <option value="{{ bill.id }}" >{{ bill.billing_name }} ({{ bill.currency.get_currency_display() }} , {{ bill.billing_type.get_billing_type_display() }} )</option>
+                    {% endfor %}
+                </select>
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Категория:
+            </td>
+            <td>
+                <select name="category_id">
+                    {% for cat in my_categories %}
+                        <option value="{{ cat.id }}" >{{ cat.category_name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Сумма:</td><td> <input type="number" name="money"></td>
+        </tr>
+        <tr>
+            <td>
+            Комментарий:</td><td> <input type="text" name="comment"></tr>
+        <tr>
+            <td>
+                <input class="btn btn-primary btn-small" type="submit" value="провести транзакцию">
+            </td>
+        </tr>
+    </table>
 </form>
-
 {% endblock content %}
 </body>
 </html>

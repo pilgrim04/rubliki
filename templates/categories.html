@@ -9,7 +9,21 @@
 
 <h4>Список категорий</h4>
 
-{% for i in user_categories %}
+
+    <h5>Доход:</h5>
+    <br/>
+{% for i in user_categories_income %}
+    <tr>
+        <td>{{ i.category_name }}</td>
+{#        <a href="{{ i.category_name }}/my_subcategories/">go</a>#}
+        <br/>
+    </tr>
+{% endfor %}
+    <br/><br/><br/>
+
+    <h5>Расход:</h5>
+    <br/>
+{% for i in user_categories_outcome %}
     <tr>
         <td>{{ i.category_name }}</td>
 {#        <a href="{{ i.category_name }}/my_subcategories/">go</a>#}
